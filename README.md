@@ -19,7 +19,7 @@ Ask questions naturally, and get answers drawn from your own knowledge base—al
 ## 🏗️ Architecture
 
 ```
-User Voice Input → ElevenLabs Agent → n8n Webhook → RAG Search (Supabase) → GPT Response → Voice Output
+User Voice Input → ElevenLabs Agent → n8n Webhook → RAG Search (Supabase) → Cohere Rerank → GPT Response → Voice Output
                                                             ↑
                                                     Embedded Documents
                                                             ↑
@@ -35,6 +35,7 @@ User Voice Input → ElevenLabs Agent → n8n Webhook → RAG Search (Supabase) 
 - [n8n](https://n8n.io/) (self-hosted or cloud)
 - [Supabase](https://supabase.com/) account
 - [OpenAI API](https://platform.openai.com/) key
+- [Cohere API](https://cohere.com/) key (for reranking)
 - [ElevenLabs](https://elevenlabs.io/) account
 - [Google Cloud](https://console.cloud.google.com/) project (for Drive integration)
 
@@ -47,7 +48,6 @@ User Voice Input → ElevenLabs Agent → n8n Webhook → RAG Search (Supabase) 
 1. **Create Google OAuth Credentials**
    - Follow the [n8n Google OAuth guide](https://docs.n8n.io/integrations/builtin/credentials/google/oauth-single-service/#create-your-google-oauth-client-credentials)
    - Enable Google Drive API in your Google Cloud Console
-   - Download OAuth credentials JSON
 
 2. **Connect to n8n**
    - Add Google Drive credentials in n8n
@@ -126,14 +126,12 @@ $$;
 #### Flow Steps:
 1. **Google Drive Trigger** - Watches for new files (.txt, .pdf)
 2. **File Content Extraction** - Reads and parses document content
-3. **Text Chunking** - Splits large documents into manageable pieces
-4. **OpenAI Embeddings** - Converts text chunks to 1536-dim vectors
-5. **Supabase Insert** - Stores embeddings with metadata in database
+3. **OpenAI Embeddings** - Converts document content to 1536-dim vectors
+4. **Supabase Insert** - Stores embeddings with metadata in database
 
 #### Key Configuration:
-- **Chunk Size**: 1000 characters (adjustable)
-- **Overlap**: 200 characters (maintains context between chunks)
-- **Model**: `text-embedding-3-small` or `text-embedding-ada-002`
+- **Embedding Model**: `text-embedding-3-small`
+- **Supported Formats**: .txt, .pdf
 
 ---
 
@@ -145,15 +143,15 @@ $$;
 
 #### Flow Steps:
 1. **Webhook Trigger** - Receives query from ElevenLabs agent
-2. **Query Embedding** - Converts user question to vector
+2. **Query Embedding** - Converts user question to vector using OpenAI
 3. **Supabase Match** - Finds top-k most relevant document chunks
-4. **Context Assembly** - Formats retrieved documents as context
-5. **GPT Generation** - Creates answer using retrieved knowledge
-6. **Response** - Returns formatted answer to voice agent
+4. **Cohere Reranking** - Re-ranks results for improved relevance
+5. **Context Assembly** - Formats retrieved documents as context
+6. **GPT Generation** - Creates answer using retrieved knowledge
+7. **Response** - Returns formatted answer to voice agent
 
 #### Webhook Configuration:
 - **Method**: POST
-- **Authentication**: API key recommended
 - **Timeout**: 30 seconds (for complex queries)
 
 ---
@@ -176,15 +174,29 @@ $$;
 
 4. **System Prompt Example**:
 ```
-You are a helpful voice assistant with access to a knowledge base. When users ask questions:
+You are a helpful and knowledgeable assistant designed to use the 'rag_knowledge_tool' to answer user queries.
 
-1. Use the rag-knowledge-tool to search for relevant information
-2. Synthesize the retrieved context into clear, conversational answers
-3. If no relevant information is found, say so honestly
-4. Keep responses concise for voice delivery (2-3 sentences when possible)
-5. Maintain a friendly, professional tone
+# Objective
+- Leverage the 'rag_knowledge_tool' to retrieve and synthesize relevant information.
+- Provide accurate, concise, and context-aware responses.
+- Maintain a cooperative and informative tone.
 
-Always cite when you're using information from the knowledge base by saying "According to your documents..." or "Based on what I found..."
+# Personality
+- Friendly, clear, and confident in explanations.
+- Curious and proactive in finding the best possible answer.
+- Professional and respectful, yet conversational and easy to follow.
+- Focused on usefulness and precision rather than verbosity.
+
+# Guidelines
+1. Always query the 'rag_knowledge_tool' when additional context or factual information is needed.
+2. When responding:
+   - Be clear and well-structured.
+   - Cite or reference retrieved knowledge naturally.
+   - Keep the tone professional, approachable, and helpful.
+3. If information cannot be found, acknowledge that and provide the best reasoning possible.
+
+# Goal
+Deliver precise, knowledge-grounded responses that help the user efficiently reach their objective.
 ```
 
 ### Testing Your Agent
@@ -195,6 +207,7 @@ Always cite when you're using information from the knowledge base by saying "Acc
 ---
 
 ## 💻 5. React Frontend (Optional)
+<img width="896" height="925" alt="image" src="https://github.com/user-attachments/assets/9fedc38e-7e96-4f8b-a6fb-44c67c1ded46" />
 
 ### Features
 - Direct integration with ElevenLabs Voice Agent SDK
@@ -222,19 +235,19 @@ const conversation = await Conversation.startSession({
 ## 🔧 Configuration Tips
 
 ### Performance Optimization
-- **Chunk Size**: Smaller chunks (500-800 chars) for precise answers, larger (1500-2000) for context
 - **Top-K Results**: Start with 3-5 matches, increase if answers lack context
 - **Model Selection**: GPT-4o-mini for speed, GPT-4o for complex reasoning
+- **Embedding Model**: Use `text-embedding-3-small` for better cost/performance
 
 ### Cost Management
-- Use `text-embedding-3-small` instead of Ada-002 (5x cheaper)
+- `text-embedding-3-small` provides excellent cost/performance balance
 - Cache frequently asked questions
 - Set token limits on GPT responses
 
 ### Quality Improvements
 - Include metadata (file name, date, source) in embeddings
 - Filter by document type or date in search
-- Add re-ranking step for better relevance
+- **Cohere Reranking** improves result relevance by reordering initial matches
 
 ---
 
@@ -246,31 +259,13 @@ const conversation = await Conversation.startSession({
 1. Voice → ElevenLabs → n8n webhook
 2. n8n embeds query → searches Supabase
 3. Retrieves relevant Q4 report chunks
-4. GPT synthesizes answer from context
-5. Response → ElevenLabs → Voice output
+4. Cohere re-ranks results for best relevance
+5. GPT synthesizes answer from top context
+6. Response → ElevenLabs → Voice output
 
 **Assistant**: "According to your Q4 report, the key findings were: revenue grew 23% year-over-year, customer retention improved to 94%, and the new product line exceeded targets by 18%."
 
 ---
-
-## 🐛 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| No documents retrieved | Check embedding dimensions match (1536), verify Supabase connection |
-| Slow responses | Reduce top-k results, optimize chunk size, check n8n workflow timeouts |
-| Irrelevant answers | Improve chunking strategy, adjust system prompt, add metadata filters |
-| Voice cuts off | Shorten GPT responses, increase ElevenLabs timeout settings |
-
----
-
-## 🔐 Security Considerations
-
-- Store API keys in environment variables
-- Use Supabase Row Level Security (RLS)
-- Implement webhook authentication
-- Sanitize user inputs before processing
-- Consider data privacy for sensitive documents
 
 ---
 
@@ -286,13 +281,3 @@ const conversation = await Conversation.startSession({
 ## 🤝 Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
-
----
-
-## 📄 License
-
-MIT License - feel free to use this in your own projects!
-
----
-
-**Built with ❤️ for voice-first knowledge access**
